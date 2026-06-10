@@ -59,7 +59,11 @@ pipeline {
             sh '''
                 export KUBECONFIG=$KUBECONFIG
                 kubectl config current-context
-                # Added the validation bypass flags below
+                
+                # Create the staging namespace if it doesn't exist yet
+                kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
+                
+                # Deploy your application
                 kubectl apply -f deployment.yaml -n staging --validate=false --insecure-skip-tls-verify=true
             '''
         }
