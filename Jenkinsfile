@@ -14,7 +14,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/travvizzzz/helloworldtest.git'
+                git branch: 'main', url: 'https://github.com/travvizzzz/HelloWorldStaginTest.git'
             }
         }
 
