@@ -11,7 +11,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/travvizzzz/HelloWorldStaginTest.git'
@@ -55,27 +54,27 @@ pipeline {
         }
         
         stage('Deploy to STAGING') {
-    steps {
-        withCredentials([
-            file(
-                credentialsId: 'kubeconfig-stagging',
-                variable: 'KUBECONFIG'
-            )
-        ]) {
-            sh '''
-            export KUBECONFIG=$KUBECONFIG
+            steps {
+                withCredentials([
+                    file(
+                        credentialsId: 'kubeconfig-stagging',
+                        variable: 'KUBECONFIG'
+                    )
+                ]) {
+                    sh '''
+                    export KUBECONFIG=$KUBECONFIG
 
-            kubectl config current-context
+                    kubectl config current-context
 
-            kubectl apply -f deployment.yaml -n staging
-            kubectl apply -f service.yaml -n staging
+                    kubectl apply -f deployment.yaml -n staging
+                    kubectl apply -f service.yaml -n staging
 
-            kubectl rollout status deployment/hello-world -n staging
-            '''
-        }
+                    kubectl rollout status deployment/hello-world -n staging
+                    '''
+                }
+            }
+        } 
     }
-
-    } 
 
     post {
         always {
