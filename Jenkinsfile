@@ -53,15 +53,15 @@ pipeline {
             }
         }
         
-        stage('Deploy to STAGING') {
+       stage('Deploy to STAGING') {
     steps {
         withCredentials([file(credentialsId: 'kubeconfig-stagging', variable: 'KUBECONFIG')]) {
             sh '''
                 export KUBECONFIG=$KUBECONFIG
                 kubectl config current-context
                 
-                # Create the staging namespace if it doesn't exist yet
-                kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
+                # Added validation bypass flags to the namespace application step
+                kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f - --validate=false --insecure-skip-tls-verify=true
                 
                 # Deploy your application
                 kubectl apply -f deployment.yaml -n staging --validate=false --insecure-skip-tls-verify=true
