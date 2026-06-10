@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     env.IMAGE_TAG = "${BUILD_NUMBER}"
-                    sh "docker build -t htetmyatisgod/calculator:2.0 ."
+                    sh "docker build -t htetmyatisgod/helloworld:2.0 ."
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh 'docker login -u $USER -p $PASS'
-                    sh 'docker push htetmyatisgod/calculator:2.0'
+                    sh 'docker push htetmyatisgod/helloworld:2.0'
                 }
             }
         }
