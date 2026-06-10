@@ -53,6 +53,27 @@ pipeline {
                 }
             }
         }
+        
+        stage('Deploy to STAGING') {
+    steps {
+        withCredentials([
+            file(
+                credentialsId: 'kubeconfig-stagging',
+                variable: 'KUBECONFIG'
+            )
+        ]) {
+            sh '''
+            export KUBECONFIG=$KUBECONFIG
+
+            kubectl config current-context
+
+            kubectl apply -f deployment.yaml -n staging
+            kubectl apply -f service.yaml -n staging
+
+            kubectl rollout status deployment/hello-world -n staging
+            '''
+        }
+    }
 
     } 
 

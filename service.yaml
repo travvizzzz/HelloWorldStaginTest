@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworldtest
+spec:
+  type: NodePort                # exposes the app on a port on all nodes
+  selector:
+    app: HelloWorldTest          # matches the Deployment pods
+  ports:
+    - protocol: TCP
+      port: 8080              # port inside the cluster
+      targetPort: 8080        # container port in pods
+      nodePort: 30081         # external port on localhost
